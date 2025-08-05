@@ -93,7 +93,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       } else {
         console.error('Logout failed:', response.status);
         // Still redirect to login even if logout API fails
-        router.push('/admin/login');
+      router.push('/admin/login');
       }
     } catch (error) {
       console.error('Logout error:', error);
@@ -285,7 +285,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         {/* Main content */}
         <main className="flex-1 bg-gray-50">
           <div className="max-w-7xl mx-auto">
-            {children}
+          {children}
           </div>
         </main>
         
