@@ -53,7 +53,7 @@ export async function GET(
       const filePath = path.join(process.cwd(), 'public', qrCode.qrCodeImagePath.replace(/^\/+/, ''));
       try {
         const imgBuffer = await fs.readFile(filePath);
-        return new NextResponse(imgBuffer, {
+        return new NextResponse(imgBuffer as any, {
           headers: {
             'Content-Type': 'image/png',
             'Content-Disposition': `attachment; filename="qr-code-${qrCode.id}.png"`,

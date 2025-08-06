@@ -4,9 +4,12 @@ import { verifyAdminSession } from '@/lib/adminAuth';
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Resolve the params promise
+    const { id } = await params;
+    
     // Verify admin session
     const adminUser = await verifyAdminSession(request);
     if (!adminUser) {
@@ -18,7 +21,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Only super admins can delete admin users' }, { status: 403 });
     }
 
-    const userId = parseInt(params.id);
+    const userId = parseInt(id);
     if (isNaN(userId)) {
       return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 });
     }

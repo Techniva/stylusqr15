@@ -87,7 +87,7 @@ export async function GET(
     });
 
     // Extract URL from qrData
-    const redirectUrl = formatQRDataToURL(qrCode.qrData);
+    const redirectUrl = formatQRDataToURL(qrCode.qrData as any);
     console.log('QR code found, redirecting to:', redirectUrl);
 
     // (Removed scanCount increment)

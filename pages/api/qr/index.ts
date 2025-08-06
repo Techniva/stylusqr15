@@ -102,7 +102,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const qrCode = await prisma.qRCode.create({
           data: {
-            qrData: structuredQRData,
+            qrData: structuredQRData as any,
             cornerShape,
             eyeShape,
             qrShape,
@@ -220,7 +220,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // 1. Create the QR code in the database (without image path)
         const qrCode = await prisma.qRCode.create({
           data: {
-            qrData: structuredQRData,
+            qrData: structuredQRData as any,
             cornerShape,
             eyeShape,
             qrShape,

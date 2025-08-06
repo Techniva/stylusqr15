@@ -80,7 +80,7 @@ export const QR_CODE_TYPES: Record<string, QRCodeTypeConfig> = {
     },
     validation: (input: string) => {
       const parts = input.split('|');
-      return parts[0] && parts[0].trim().length > 0;
+      return Boolean(parts[0] && parts[0].trim().length > 0);
     }
   },
   'vCard': {
@@ -103,7 +103,7 @@ export const QR_CODE_TYPES: Record<string, QRCodeTypeConfig> = {
     },
     validation: (input: string) => {
       const parts = input.split('|');
-      return parts[0] && parts[0].trim().length > 0;
+      return Boolean(parts[0] && parts[0].trim().length > 0);
     }
   },
   'Location': {

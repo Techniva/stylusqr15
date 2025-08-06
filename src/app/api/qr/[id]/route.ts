@@ -36,12 +36,12 @@ export async function PATCH(
     // Update QR data if provided
     if (qrType && qrData) {
       // Extract the current URL from qrData and save it as lastLink
-      const currentUrl = formatQRDataToURL(currentQRCode.qrData);
+      const currentUrl = formatQRDataToURL(currentQRCode.qrData as any);
       updateData.lastLink = currentUrl;
       
       // Create new QR data with the updated information
       const newQRData = createQRData(qrType as QRType, qrData, metadata);
-      updateData.qrData = newQRData;
+      updateData.qrData = newQRData as any;
       updateData.updateCount = { increment: 1 };
     }
     

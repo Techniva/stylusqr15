@@ -1,4 +1,4 @@
-import { QRType } from '../../lib/qrDataUtils';
+import { QRType } from '../../../lib/qrDataUtils';
 
 export interface QRCodeSettings {
   url: string;
