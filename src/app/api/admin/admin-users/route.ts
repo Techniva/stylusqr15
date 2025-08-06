@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ users: adminUsers });
   } catch (error) {
-    console.error('Error fetching admin users:', error);
+    //console.error('Error fetching admin users:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
       user: newAdminUser 
     }, { status: 201 });
   } catch (error) {
-    console.error('Error creating admin user:', error);
+   // console.error('Error creating admin user:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 } 

@@ -108,7 +108,7 @@ export default function AdminUsers() {
           </div>
           <button
             onClick={fetchUsers}
-            className="flex items-center space-x-2 px-4 py-2 bg-[#063970] text-white rounded-lg hover:bg-[#052c5c] transition-colors"
+            className="flex items-center space-x-2 px-2 py-2 bg-[#063970] text-white rounded-full hover:bg-[#052c5c] transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
             
@@ -117,23 +117,26 @@ export default function AdminUsers() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 px-6 py-3 mb-4">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-          <div className="flex space-x-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <input
-                type="text"
-                placeholder="Search users..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="text-sm pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-[#063970] focus:border-[#063970]"
-              />
-            </div>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 px-4 py-3 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 items-center">
+          {/* Search Input */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search users..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full text-sm pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-[#063970] focus:border-[#063970]"
+            />
+          </div>
+          
+          {/* Plan Filter */}
+          <div>
             <select
               value={selectedSubscription}
               onChange={(e) => setSelectedSubscription(e.target.value)}
-              className="px-4 text-sm py-2 border border-gray-300 rounded-lg focus:ring-[#063970] focus:border-[#063970]"
+              className="w-full text-sm px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#063970] focus:border-[#063970]"
             >
               <option value="">All Plans</option>
               <option value="Free">Free</option>
@@ -141,14 +144,16 @@ export default function AdminUsers() {
               <option value="Pro">Pro</option>
             </select>
           </div>
-          <div className="text-sm text-gray-500">
+          
+          {/* Total Count */}
+          <div className="text-sm text-gray-500 text-center md:text-left">
             Total: {pagination.total} users
           </div>
         </div>
       </div>
 
       {/* Users Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white border border-gray-200">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -189,7 +194,7 @@ export default function AdminUsers() {
               ) : (
                 users.map((user) => (
                   <tr key={user.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-6 py-2 whitespace-nowrap">
                       <div>
                         <div className="text-sm font-medium text-gray-900">{user.fullName}</div>
                         <div className="text-sm text-gray-500">{user.email}</div>

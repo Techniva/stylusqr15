@@ -193,7 +193,7 @@ export default function AdminQRCodes() {
           </div>
           <button
             onClick={() => { fetchQRCodes(); fetchStats(); }}
-            className="flex items-center space-x-2 px-4 py-2 bg-[#063970] text-white rounded-lg hover:bg-[#052c5c] transition-colors"
+            className="flex items-center space-x-2 px-2 py-2 bg-[#063970] text-white rounded-full hover:bg-[#052c5c] transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
@@ -202,51 +202,51 @@ export default function AdminQRCodes() {
 
       {/* Stats Cards */}
       {stats && stats.totalQRCodes !== undefined && (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 hover:shadow-md transition-shadow">
             <div className="flex items-center">
               <div className="p-2 bg-blue-100 rounded-lg">
-                <QrCode className="w-5 h-5 text-blue-600" />
+                <QrCode className="w-4 h-4 text-blue-600" />
               </div>
-              <div className="ml-3">
+              <div className="ml-2">
                 <p className="text-xs font-medium text-gray-600">Total QR Codes</p>
-                <p className="text-xl font-bold text-gray-900">{stats.totalQRCodes}</p>
+                <p className="text-lg font-bold text-gray-900">{stats.totalQRCodes}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 hover:shadow-md transition-shadow">
             <div className="flex items-center">
               <div className="p-2 bg-green-100 rounded-lg">
-                <Activity className="w-5 h-5 text-green-600" />
+                <Activity className="w-4 h-4 text-green-600" />
               </div>
-              <div className="ml-3">
+              <div className="ml-2">
                 <p className="text-xs font-medium text-gray-600">Active QR Codes</p>
-                <p className="text-xl font-bold text-gray-900">{stats.activeQRCodes}</p>
+                <p className="text-lg font-bold text-gray-900">{stats.activeQRCodes}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 hover:shadow-md transition-shadow">
             <div className="flex items-center">
               <div className="p-2 bg-purple-100 rounded-lg">
-                <BarChart3 className="w-5 h-5 text-purple-600" />
+                <BarChart3 className="w-4 h-4 text-purple-600" />
               </div>
-              <div className="ml-3">
+              <div className="ml-2">
                 <p className="text-xs font-medium text-gray-600">Total Scans</p>
-                <p className="text-xl font-bold text-gray-900">{stats.totalScans}</p>
+                <p className="text-lg font-bold text-gray-900">{stats.totalScans}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 hover:shadow-md transition-shadow">
             <div className="flex items-center">
               <div className="p-2 bg-orange-100 rounded-lg">
-                <Download className="w-5 h-5 text-orange-600" />
+                <Download className="w-4 h-4 text-orange-600" />
               </div>
-              <div className="ml-3">
+              <div className="ml-2">
                 <p className="text-xs font-medium text-gray-600">Total Downloads</p>
-                <p className="text-xl font-bold text-gray-900">{stats.totalDownloads}</p>
+                <p className="text-lg font-bold text-gray-900">{stats.totalDownloads}</p>
               </div>
             </div>
           </div>
@@ -254,32 +254,39 @@ export default function AdminQRCodes() {
       )}
 
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 px-6 py-3 mb-4">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-          <div className="flex space-x-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <input
-                type="text"
-                placeholder="Search QR codes..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="text-sm pl-10 pr-4 py-1 border border-gray-300 rounded-lg focus:ring-[#063970] focus:border-[#063970]"
-              />
-            </div>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 px-4 py-3 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 items-center">
+          {/* Search Input */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search QR codes..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full text-sm pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-[#063970] focus:border-[#063970]"
+            />
+          </div>
+          
+          {/* Status Filter */}
+          <div>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="text-sm px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#063970] focus:border-[#063970]"
+              className="w-full text-sm px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#063970] focus:border-[#063970]"
             >
               <option value="">All Status</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
             </select>
+          </div>
+          
+          {/* Type Filter */}
+          <div>
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="text-sm px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#063970] focus:border-[#063970]"
+              className="w-full text-sm px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#063970] focus:border-[#063970]"
             >
               <option value="">All Types</option>
               <option value="website">Website</option>
@@ -298,14 +305,16 @@ export default function AdminQRCodes() {
               <option value="trackable">Trackable</option>
             </select>
           </div>
-          <div className="text-sm text-gray-500">
+          
+          {/* Total Count */}
+          <div className="text-sm text-gray-500 text-center md:text-left">
             Total: {pagination.total} QR codes
           </div>
         </div>
       </div>
 
       {/* QR Codes Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white border border-gray-200">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">

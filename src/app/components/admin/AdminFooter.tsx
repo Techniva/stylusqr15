@@ -7,10 +7,10 @@ export default function AdminFooter() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-white border-t border-gray-200 mt-auto">
+    <footer className="bg-white border-t border-gray-200 mt-auto top-0 z-30">
       <div className="max-w-7xl mx-auto p-3">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="flex items-center space-x-2 text-sm text-gray-600 mb-4 md:mb-0">
+        <div className="flex flex-row md:flex-row justify-between items-center">
+          <div className="flex items-center space-x-2 text-sm text-gray-600">
             <QrCode className="h-4 w-4 text-[#063970]" />
             <span>StylusQR © {currentYear} Admin Panel</span>
             

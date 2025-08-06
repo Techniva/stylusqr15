@@ -46,7 +46,6 @@ export async function DELETE(
       message: 'Admin user deleted successfully' 
     });
   } catch (error) {
-    console.error('Error deleting admin user:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 } 

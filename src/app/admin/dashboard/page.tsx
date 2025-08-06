@@ -121,7 +121,7 @@ export default function AdminDashboard() {
           </div>
           <button
             onClick={fetchDashboardData}
-            className="flex items-center space-x-2 px-4 py-2 bg-[#063970] text-white rounded-lg hover:bg-[#052c5c] transition-colors"
+            className="flex items-center space-x-2 px-2 py-2 bg-[#063970] text-white rounded-full hover:bg-[#052c5c] transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
             
@@ -131,7 +131,7 @@ export default function AdminDashboard() {
 
       {/* Stats Cards */}
       {stats && (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
             <div className="flex items-center">
               <div className="p-2 bg-blue-100 rounded-lg">
@@ -183,7 +183,7 @@ export default function AdminDashboard() {
       )}
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 px-4 pt-2 pb-4 mb-4">
         <h2 className="text-lg font-semibold text-gray-900 mb-2">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
@@ -222,7 +222,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Users Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white border border-gray-200">
         <div className="px-6 py-3 border-b border-gray-200">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
             <h2 className="text-lg font-semibold text-gray-900">Recent Users</h2>

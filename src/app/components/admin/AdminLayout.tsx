@@ -28,6 +28,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const [admin, setAdmin] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [currentContent, setCurrentContent] = useState<string>('dashboard');
+  const [isClosing, setIsClosing] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [logoutLoading, setLogoutLoading] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -45,6 +48,15 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     const path = pathname?.split('/').pop() || 'dashboard';
     setCurrentContent(path);
   }, [pathname]);
+
+  const handleSidebarClose = () => {
+    setIsClosing(true);
+    setSidebarOpen(false);
+    // Reset closing state after animation completes
+    setTimeout(() => {
+      setIsClosing(false);
+    }, 300);
+  };
 
   const checkAdminAuth = async () => {
     try {
@@ -78,7 +90,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const handleLogout = async () => {
     try {
       // Show loading state
-      setLoading(true);
+      setLogoutLoading(true);
+      setShowLogoutConfirm(false);
       
       const response = await fetch('/api/admin/auth/logout', { 
         method: 'POST',
@@ -93,14 +106,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       } else {
         console.error('Logout failed:', response.status);
         // Still redirect to login even if logout API fails
-      router.push('/admin/login');
+        router.push('/admin/login');
       }
     } catch (error) {
       console.error('Logout error:', error);
       // Redirect to login even if there's an error
       router.push('/admin/login');
     } finally {
-      setLoading(false);
+      setLogoutLoading(false);
     }
   };
 
@@ -144,74 +157,84 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Mobile sidebar overlay */}
-      <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
+      <div className={`fixed inset-0 z-50 lg:hidden transition-opacity duration-300 ${
+        sidebarOpen || isClosing ? 'visible opacity-100' : 'invisible opacity-0'
+      }`}>
         <div 
           className={`fixed inset-0 bg-gray-600 transition-opacity duration-300 ${
             sidebarOpen ? 'bg-opacity-75' : 'bg-opacity-0'
           }`} 
-          onClick={() => setSidebarOpen(false)} 
+          onClick={handleSidebarClose} 
         />
-        <div className={`relative flex-1 flex flex-col max-w-xs w-full bg-white transform transition-transform duration-300 ease-in-out ${
+        <div className={`fixed left-0 top-0 h-full w-64 max-w-xs bg-white shadow-xl transform transition-transform duration-300 ease-in-out ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}>
-          <div className="absolute top-0 right-0 -mr-12 pt-2">
-            <button
-              type="button"
-              className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-              onClick={() => setSidebarOpen(false)}
-            >
-              <X className="h-6 w-6 text-white" />
-            </button>
-          </div>
-          <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
-            <div className="flex-shrink-0 flex items-center px-4">
-              <div className="flex items-center">
-                <QrCode className="h-8 w-8 text-[#063970]" />
-                <h1 className="ml-2 text-xl font-bold text-gray-900">Admin Panel</h1>
+          {/* Main sidebar content with flex layout */}
+          <div className="flex flex-col h-full">
+            {/* Header with close button */}
+            <div className="flex-shrink-0 pt-5 pb-4">
+              <div className="flex items-center justify-between px-4">
+                <div className="flex items-center">
+                  <QrCode className="h-8 w-8 text-[#063970]" />
+                  <h1 className="ml-2 text-xl font-bold text-gray-900">Admin Panel</h1>
+                </div>
+                <button
+                  type="button"
+                  className="h-10 w-10 inline-flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all duration-200 transform"
+                  onClick={handleSidebarClose}
+                >
+                  <X className="h-6 w-6 transition-transform duration-200" />
+                </button>
               </div>
             </div>
-            <nav className="mt-8 px-2 space-y-1">
-              {navigation.map((item) => {
-                const isActive = currentContent === item.href.split('/').pop();
-                return (
-                  <button
-                    key={item.name}
-                    onClick={() => handleNavigation(item.href)}
-                    className={`w-full text-left group flex items-center px-3 py-3 text-base font-medium rounded-lg transition-colors ${
-                      isActive
-                        ? 'bg-[#063970] text-white shadow-lg'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                    }`}
-                  >
-                    <item.icon className={`mr-4 h-6 w-6 ${isActive ? 'text-white' : 'text-gray-400'}`} />
-                    <div>
-                      <div className="font-medium">{item.name}</div>
-                      <div className={`text-xs ${isActive ? 'text-blue-100' : 'text-gray-500'}`}>
-                        {item.description}
+            
+            {/* Navigation */}
+            <div className="flex-1 overflow-y-auto px-2">
+              <nav className="space-y-0.5">
+                {navigation.map((item) => {
+                  const isActive = currentContent === item.href.split('/').pop();
+                  return (
+                    <button
+                      key={item.name}
+                      onClick={() => handleNavigation(item.href)}
+                      className={`w-full text-left group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                        isActive
+                          ? 'bg-[#063970] text-white shadow-lg'
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      }`}
+                    >
+                      <item.icon className={`mr-3 h-4 w-4 ${isActive ? 'text-white' : 'text-gray-400'}`} />
+                      <div>
+                        <div className="font-medium text-sm">{item.name}</div>
+                        <div className={`text-xs ${isActive ? 'text-blue-100' : 'text-gray-500'}`}>
+                          {item.description}
+                        </div>
                       </div>
-                    </div>
-                  </button>
-                );
-              })}
-            </nav>
-          </div>
-          <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
-            <div className="flex items-center w-full">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-[#063970] rounded-full flex items-center justify-center">
-                  <Users className="h-5 w-5 text-white" />
+                    </button>
+                  );
+                })}
+              </nav>
+            </div>
+            
+            {/* User profile section at bottom */}
+            <div className="flex-shrink-0 border-t border-gray-200 p-4">
+              <div className="flex items-center w-full">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-[#063970] rounded-full flex items-center justify-center">
+                    <Users className="h-5 w-5 text-white" />
+                  </div>
                 </div>
+                <div className="ml-3 flex-1">
+                  <p className="text-sm font-medium text-gray-700">System Administrator</p>
+                  <p className="text-xs text-gray-500">super_admin</p>
+                </div>
+                <button
+                  onClick={() => setShowLogoutConfirm(true)}
+                  className="flex-shrink-0 bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#063970]"
+                >
+                  <LogOut className="h-5 w-5" />
+                </button>
               </div>
-              <div className="ml-3 flex-1">
-                <p className="text-sm font-medium text-gray-700">{admin.fullName}</p>
-                <p className="text-xs text-gray-500">{admin.role}</p>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="flex-shrink-0 bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#063970]"
-              >
-                <LogOut className="h-5 w-5" />
-              </button>
             </div>
           </div>
         </div>
@@ -228,15 +251,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 <QrCode className="h-8 w-8 text-[#063970]" />
                 {!sidebarCollapsed && <h1 className="ml-2 text-xl font-bold text-gray-900">StylusQR</h1>}
               </div>
-              <button
-                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                className="p-1 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
-                title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-              >
-                <Menu className={`h-5 w-5 transition-transform duration-300 ${
-                  sidebarCollapsed ? 'rotate-180' : ''
-                }`} />
-              </button>
+              
             </div>
             <nav className="mt-8 flex-1 px-2 space-y-1">
               {navigation.map((item) => {
@@ -280,6 +295,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           onLogout={handleLogout}
           onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
           sidebarOpen={sidebarOpen}
+          onLargeScreenMenuToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
         />
         
         {/* Main content */}
@@ -292,6 +308,47 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         {/* Footer */}
         <AdminFooter />
       </div>
+
+      {/* Logout confirmation modal */}
+      {showLogoutConfirm && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-lg bg-white">
+            <div className="mt-3">
+              <div className="flex items-center mb-4">
+                <LogOut className="w-6 h-6 text-orange-600 mr-3" />
+                <h3 className="text-lg font-medium text-gray-900">Confirm Logout</h3>
+              </div>
+              
+              <p className="text-sm text-gray-600 mb-4">
+                Are you sure you want to logout from the admin panel?
+              </p>
+              
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => setShowLogoutConfirm(false)}
+                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleLogout}
+                  disabled={logoutLoading}
+                  className="px-4 py-2 bg-[#063970] text-white rounded-lg hover:bg-[#052c5c] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                >
+                  {logoutLoading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      <span>Logging out...</span>
+                    </>
+                  ) : (
+                    <span>Logout</span>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 
