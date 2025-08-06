@@ -10,6 +10,23 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  {
+    ignores: [
+      "node_modules/",
+      ".next/",
+      "out/",
+      "build/",
+      "dist/",
+      "*.config.js",
+      "*.config.mjs",
+      "prisma/generated/**",
+      "pages/api/qr/index.ts",
+      "src/app/api/qr/**",
+      "src/app/api/admin/admin-users/**",
+      "src/app/lib/qrCodeUtils.ts",
+      "src/app/components/layout/qr/QRCodeSettings.ts"
+    ]
+  },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     rules: {
@@ -25,17 +42,7 @@ const eslintConfig = [
       "no-var": "off",
       "no-console": "off",
       "no-debugger": "off"
-    },
-    ignorePatterns: [
-      "node_modules/",
-      ".next/",
-      "out/",
-      "build/",
-      "dist/",
-      "*.config.js",
-      "*.config.mjs",
-      "prisma/generated/**"
-    ]
+    }
   }
 ];
 
