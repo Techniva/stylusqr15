@@ -126,6 +126,30 @@ export const qrSVGs = [
     ),
   },
   {
+    value: "circle",
+    svg: (
+      <svg width="32" height="32" viewBox="0 0 32 32">
+        {/* Circular dots - prominent circular representation */}
+        <circle cx="6" cy="6" r="2.5" fill="#000"/>
+        <circle cx="14" cy="6" r="2.5" fill="#000"/>
+        <circle cx="22" cy="6" r="2.5" fill="#000"/>
+        <circle cx="30" cy="6" r="2.5" fill="#000"/>
+        <circle cx="6" cy="14" r="2.5" fill="#000"/>
+        <circle cx="14" cy="14" r="2.5" fill="#000"/>
+        <circle cx="22" cy="14" r="2.5" fill="#000"/>
+        <circle cx="30" cy="14" r="2.5" fill="#000"/>
+        <circle cx="6" cy="22" r="2.5" fill="#000"/>
+        <circle cx="14" cy="22" r="2.5" fill="#000"/>
+        <circle cx="22" cy="22" r="2.5" fill="#000"/>
+        <circle cx="30" cy="22" r="2.5" fill="#000"/>
+        <circle cx="6" cy="30" r="2.5" fill="#000"/>
+        <circle cx="14" cy="30" r="2.5" fill="#000"/>
+        <circle cx="22" cy="30" r="2.5" fill="#000"/>
+        <circle cx="30" cy="30" r="2.5" fill="#000"/>
+      </svg>
+    ),
+  },
+  {
     value: "rounded",
     svg: (
       <svg width="32" height="32" viewBox="0 0 32 32">

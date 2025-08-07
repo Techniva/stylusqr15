@@ -93,6 +93,7 @@ const QRCodePreview: React.FC<QRCodePreviewProps> = ({
     const dotTypes: Record<string, DotType> = {
       // Original shapes
       square: "square",
+      circle: "dots", // Map circle to dots for circular QR codes
       rounded: "rounded",
       dots: "dots",
       classy: "classy",

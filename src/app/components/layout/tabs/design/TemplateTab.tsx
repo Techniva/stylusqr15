@@ -44,6 +44,25 @@ const TemplateTab: React.FC<TemplateTabProps> = ({ qrSettings, onSettingsChange 
       )
     },
     {
+      id: 'circular',
+      name: 'Circular',
+      description: 'Modern circular dots',
+      settings: {
+        foregroundColor: '#000000',
+        backgroundColor: '#FFFFFF',
+        qrShape: 'circle',
+        cornerShape: 'extra-rounded',
+        eyeShape: 'circle',
+      },
+      preview: (
+        <div className="w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center">
+          <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
+            <div className="w-3 h-3 bg-white rounded-full"></div>
+          </div>
+        </div>
+      )
+    },
+    {
       id: 'facebook',
       name: 'Facebook',
       description: 'Classic blue with white f logo',
@@ -175,6 +194,44 @@ const TemplateTab: React.FC<TemplateTabProps> = ({ qrSettings, onSettingsChange 
           </div>
         </div>
       )
+    },
+    {
+      id: 'circular-blue',
+      name: 'Circular Blue',
+      description: 'Blue circular dots',
+      settings: {
+        foregroundColor: '#3B82F6',
+        backgroundColor: '#FFFFFF',
+        qrShape: 'circle',
+        cornerShape: 'extra-rounded',
+        eyeShape: 'circle',
+      },
+      preview: (
+        <div className="w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center">
+          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+            <div className="w-3 h-3 bg-white rounded-full"></div>
+          </div>
+        </div>
+      )
+    },
+    {
+      id: 'circular-gradient',
+      name: 'Circular Gradient',
+      description: 'Purple to pink gradient',
+      settings: {
+        foregroundColor: '#8B5CF6',
+        backgroundColor: '#FFFFFF',
+        qrShape: 'circle',
+        cornerShape: 'extra-rounded',
+        eyeShape: 'circle',
+      },
+      preview: (
+        <div className="w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center">
+          <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+            <div className="w-3 h-3 bg-white rounded-full"></div>
+          </div>
+        </div>
+      )
     }
   ];
 
@@ -187,7 +244,7 @@ const TemplateTab: React.FC<TemplateTabProps> = ({ qrSettings, onSettingsChange 
           <h3 className="text-lg font-semibold text-gray-800">QR Code Templates</h3>
         </div>
         
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 gap-4">
           {templates.map((template) => (
             <button
               key={template.id}
