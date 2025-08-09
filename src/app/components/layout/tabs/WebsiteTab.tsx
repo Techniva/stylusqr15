@@ -7,6 +7,9 @@ import TemplateTab from "@/app/components/layout/tabs/design/TemplateTab";
 import LocationMapInput from "@/app/components/layout/tabs/LocationMapInput";
 import { QRCodeSettings } from "@/app/components/layout/qr/QRCodeSettings";
 import { QR_TYPE_CONFIGS, parseUserInput, validateQRData, createQRData, QRType } from "../../../lib/qrDataUtils";
+import VCardForm from "./datatypes/VCardForm";
+import WiFiTab from "./datatypes/WiFiTab";
+import PhoneInputSettings from "./datatypes/PhoneInputSettings";
 
 interface WebsiteTabProps {
   qrSettings: QRCodeSettings;
@@ -167,6 +170,30 @@ const WebsiteTab: React.FC<WebsiteTabProps> = ({ qrSettings, onSettingsChange, h
                       console.log('Location selected:', { lat, lng, address });
                     }}
                   />
+                ) : qrSettings.dataType === 'email' ? (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Enter Email Address
+                    </label>
+                    <input
+                      type="email"
+                      value={qrSettings.url}
+                      onChange={(e) => handleUrlChange(e.target.value)}
+                      placeholder="example@example.com"
+                      className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#063970] focus:border-[#063970] transition-colors ${
+                        inputError ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                    />
+                    {inputError && (
+                      <p className="text-red-500 text-sm mt-1">{inputError}</p>
+                    )}
+                  </div>
+                ) : qrSettings.dataType === 'phone' ? (
+                  <PhoneInputSettings qrSettings={qrSettings} onSettingsChange={onSettingsChange} inputError={inputError} setInputError={setInputError} />
+                ) : qrSettings.dataType === 'wifi' ? (
+                  <WiFiTab qrSettings={qrSettings} onSettingsChange={onSettingsChange} />
+                ) : qrSettings.dataType === 'vcard' ? (
+                  <VCardForm qrSettings={qrSettings} onSettingsChange={onSettingsChange} />
                 ) : (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
