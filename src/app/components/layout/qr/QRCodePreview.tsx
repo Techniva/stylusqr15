@@ -1,14 +1,12 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Download, RefreshCw, Save, Lock, X, Crown } from "lucide-react";
+import { Download, RefreshCw, Save, Lock } from "lucide-react";
 import QRCodeStyling from "qr-code-styling";
 
 
 import { QRCodeSettings } from "@/app/components/layout/qr/QRCodeSettings";
-import { handleAuthError } from '@/lib/authUtils';
 import { formatQRDataToURL, createQRData, parseUserInput, QRType } from "../../../lib/qrDataUtils";
-import Link from 'next/link';
 
 interface UserData {
   id: number;
@@ -29,6 +27,7 @@ const QRCodePreview: React.FC<QRCodePreviewProps> = ({
     cornerShape: 'square',
     eyeShape: 'square',
     qrShape: 'square',
+    qrCodeShape: 'square',
     foregroundColor: '#000000',
     dotColor: '#000000',
     cornerColor: '#000000',
@@ -49,19 +48,19 @@ const QRCodePreview: React.FC<QRCodePreviewProps> = ({
 }) => {
   // Debug received settings
   console.log('=== QRCODE PREVIEW RECEIVED SETTINGS ===');
-  console.log('Received settings:', settings);
-  console.log('settings.logoImage:', settings.logoImage);
-  console.log('settings.logoImage type:', typeof settings.logoImage);
-  console.log('settings.logoImage constructor:', settings.logoImage?.constructor?.name);
-  console.log('settings.logoImage JSON:', JSON.stringify(settings.logoImage));
-  console.log('=== END QRCODE PREVIEW RECEIVED SETTINGS ===');
+  //console.log('Received settings:', settings);
+  //console.log('settings.logoImage:', settings.logoImage);
+  //console.log('settings.logoImage type:', typeof settings.logoImage);
+  //console.log('settings.logoImage constructor:', settings.logoImage?.constructor?.name);
+  //console.log('settings.logoImage JSON:', JSON.stringify(settings.logoImage));
+  //console.log('=== END QRCODE PREVIEW RECEIVED SETTINGS ===');
   
   // Monitor settings changes
   useEffect(() => {
     console.log('=== SETTINGS CHANGE DETECTED ===');
-    console.log('New settings.logoImage:', settings.logoImage);
-    console.log('New settings.logoImage type:', typeof settings.logoImage);
-    console.log('=== END SETTINGS CHANGE DETECTED ===');
+    //console.log('New settings.logoImage:', settings.logoImage);
+    //console.log('New settings.logoImage type:', typeof settings.logoImage);
+    //console.log('=== END SETTINGS CHANGE DETECTED ===');
   }, [settings.logoImage]);
 
 
@@ -78,11 +77,11 @@ const QRCodePreview: React.FC<QRCodePreviewProps> = ({
   // Map UI settings to qr-code-styling options
   const getQrOptions = (customSettings?: any) => {
     // Debug: Log the settings being passed
-    console.log('=== QR OPTIONS DEBUG ===');
-    console.log('customSettings:', customSettings);
-    console.log('settings:', settings);
-    console.log('customSettings type:', typeof customSettings);
-    console.log('settings type:', typeof settings);
+    //console.log('=== QR OPTIONS DEBUG ===');
+    //console.log('customSettings:', customSettings);
+    //console.log('settings:', settings);
+    //console.log('customSettings type:', typeof customSettings);
+    //console.log('settings type:', typeof settings);
     
     // Allowed values for qr-code-styling library
     type DotType = 'rounded' | 'dots' | 'classy' | 'classy-rounded' | 'square' | 'extra-rounded';
@@ -134,12 +133,12 @@ const QRCodePreview: React.FC<QRCodePreviewProps> = ({
     const currentSettings = customSettings || settings;
     
     const options: any = {
-      width: 280,
-      height: 280,
+      width: settings.qrCodeShape !== 'square' ? 240 : 280, // Smaller for shaped QR codes
+      height: settings.qrCodeShape !== 'square' ? 240 : 280, // Smaller for shaped QR codes
       type: "svg" as const,
       data: "https://example.com",
       image: undefined,
-      margin: 0,
+      margin: settings.qrCodeShape !== 'square' ? 10 : 0, // Add margin for shaped QR codes
       qrOptions: {
         type: "Canvas" as const,
         mode: "Byte" as const,
@@ -168,11 +167,11 @@ const QRCodePreview: React.FC<QRCodePreviewProps> = ({
     };
 
     // Debug dot color
-    console.log('=== DOT COLOR DEBUG ===');
-    console.log('currentSettings.dotColor:', currentSettings.dotColor);
-    console.log('currentSettings.foregroundColor:', currentSettings.foregroundColor);
-    console.log('Final dot color:', options.dotsOptions.color);
-    console.log('=== END DOT COLOR DEBUG ===');
+    //console.log('=== DOT COLOR DEBUG ===');
+    //console.log('currentSettings.dotColor:', currentSettings.dotColor);
+    //console.log('currentSettings.foregroundColor:', currentSettings.foregroundColor);
+    //console.log('Final dot color:', options.dotsOptions.color);
+    //console.log('=== END DOT COLOR DEBUG ===');
 
     // Handle logo image
     if (currentSettings.logoImage) {
@@ -247,17 +246,18 @@ const QRCodePreview: React.FC<QRCodePreviewProps> = ({
       setShouldBlur(blurState);
       
       if (!displayData || displayData.trim() === '') {
+        const size = settings.qrCodeShape !== 'square' ? 240 : 280;
         qrRef.current.innerHTML = `
           <div style="
-            width: 280px; 
-            height: 280px; 
+            width: ${size}px; 
+            height: ${size}px; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             background-color: ${settings.backgroundColor || '#fff'}; 
             border: 2px solid #e5e7eb; 
-            border-radius: 8px;
-            font-size: 140px; 
+            border-radius: ${settings.qrCodeShape === 'circle' ? '50%' : '8px'};
+            font-size: ${size * 0.5}px; 
             color: #9ca3af; 
             font-weight: bold;
           ">
@@ -269,10 +269,10 @@ const QRCodePreview: React.FC<QRCodePreviewProps> = ({
           const qrOptions = getQrOptions(settings);
           
           console.log('=== QR CODE GENERATION DEBUG ===');
-          console.log('qrOptions:', qrOptions);
-          console.log('qrOptions.image:', qrOptions.image);
-          console.log('displayData:', displayData);
-          console.log('=== END QR CODE GENERATION DEBUG ===');
+          //console.log('qrOptions:', qrOptions);
+          //console.log('qrOptions.image:', qrOptions.image);
+          //console.log('displayData:', displayData);
+          //console.log('=== END QR CODE GENERATION DEBUG ===');
           
           // Always recreate QR instance when settings change
           if (qrInstance.current) {
@@ -281,9 +281,9 @@ const QRCodePreview: React.FC<QRCodePreviewProps> = ({
           }
           
             console.log('=== QR INSTANCE CREATION ===');
-            console.log('Creating new QR instance with options:', qrOptions);
-          console.log('qrOptions.image:', qrOptions.image);
-          console.log('qrOptions.image type:', typeof qrOptions.image);
+            //console.log('Creating new QR instance with options:', qrOptions);
+          //console.log('qrOptions.image:', qrOptions.image);
+          //console.log('qrOptions.image type:', typeof qrOptions.image);
           
             qrInstance.current = new QRCodeStyling({
               ...qrOptions,
@@ -308,16 +308,17 @@ const QRCodePreview: React.FC<QRCodePreviewProps> = ({
           }, 0);
         } catch (error) {
           console.error('Error creating QR code:', error);
+          const size = settings.qrCodeShape !== 'square' ? 240 : 280;
           qrRef.current.innerHTML = `
             <div style="
-              width: 280px; 
-              height: 280px; 
+              width: ${size}px; 
+              height: ${size}px; 
               display: flex; 
               align-items: center; 
               justify-content: center; 
               background-color: #fee2e2; 
               border: 2px solid #fecaca; 
-              border-radius: 8px;
+              border-radius: ${settings.qrCodeShape === 'circle' ? '50%' : '8px'};
               color: #dc2626; 
               font-size: 14px; 
               text-align: center;
@@ -504,12 +505,79 @@ const QRCodePreview: React.FC<QRCodePreviewProps> = ({
   };
 
   const getFrameContainerClasses = () => {
-    const baseClasses = "relative bg-white rounded-lg overflow-hidden border border-gray-200 ";
+    const baseClasses = "relative bg-white overflow-hidden border border-gray-200 ";
     // Increase height when frame is enabled to accommodate frame border and text
     const sizeClasses = settings.frameStyle && settings.frameStyle !== 'none' 
       ? "w-[300px] h-[342px]" // Larger size for frame with bigger QR code
       : "w-[280px] h-[280px]"; // Larger size for standard QR code
     return `${baseClasses} ${sizeClasses}`;
+  };
+
+  const getFrameContainerStyle = () => {
+    if (settings.frameStyle && settings.frameStyle !== 'none') {
+      return {
+        ...getQRCodeShapeStyle(),
+        backgroundColor: settings.backgroundColor || '#FFFFFF'
+      };
+    }
+    return {};
+  };
+
+  const getQRCodeShapeStyle = () => {
+    const size = settings.frameStyle && settings.frameStyle !== 'none' ? 300 : 280;
+    
+    switch (settings.qrCodeShape) {
+      case 'circle':
+        return {
+          width: `${size}px`,
+          height: `${size}px`,
+          borderRadius: '50%',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        };
+      case 'rounded':
+        return {
+          width: `${size}px`,
+          height: `${size}px`,
+          borderRadius: '20px',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        };
+      case 'hexagon':
+        return {
+          width: `${size}px`,
+          height: `${size}px`,
+          clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        };
+      case 'octagon':
+        return {
+          width: `${size}px`,
+          height: `${size}px`,
+          clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        };
+      default: // square
+        return {
+          width: `${size}px`,
+          height: `${size}px`,
+          borderRadius: '8px',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        };
+    }
   };
 
   const getFrameTextSizeClass = () => {
@@ -624,7 +692,7 @@ const QRCodePreview: React.FC<QRCodePreviewProps> = ({
          
           {settings.frameStyle && settings.frameStyle !== 'none' ? (
             <div 
-              className={`flex flex-col items-center justify-between min-h-[340px] pt-2 rounded-lg relative ${
+              className={`flex flex-col items-center justify-between min-h-[340px] pt-2 relative ${
                 settings.frameStyle === 'solid' ? 'border-2 border-solid' :
                 settings.frameStyle === 'dashed' ? 'border-2 border-dashed' :
                 settings.frameStyle === 'dotted' ? 'border-2 border-dotted' : ''
@@ -633,7 +701,8 @@ const QRCodePreview: React.FC<QRCodePreviewProps> = ({
                 borderColor: settings.frameColor || '#000000',
                 backgroundColor: settings.backgroundColor || '#FFFFFF',
                 color: settings.frameTextColor || '#000000',
-                boxShadow: '0 2px 4px -1px rgba(0, 0, 0, 0.1)'
+                boxShadow: '0 2px 4px -1px rgba(0, 0, 0, 0.1)',
+                ...getFrameContainerStyle()
               }}
             >
               {/* QR Code in Center */}
@@ -651,13 +720,20 @@ const QRCodePreview: React.FC<QRCodePreviewProps> = ({
                   {settings.frameText}
                 </div>
               ) : (
-                <div className="text-center text-xs text-gray-400 border border-dashed border-gray-300 px-4 py-2 rounded-lg border-2 border-red-500">
+                <div className="text-center text-xs text-gray-400 border-dashed border-gray-300 px-4 py-2 rounded-lg border-2">
                   No frame text set (Debug: frameText="{settings.frameText}")
               </div>
               )}
             </div>
           ) : (
-            <div ref={qrRef} className="w-[280px] h-[280px] flex items-center justify-center" />
+            <div 
+              ref={qrRef} 
+              className="flex items-center justify-center" 
+              style={{
+                ...getQRCodeShapeStyle(),
+                backgroundColor: settings.backgroundColor || '#FFFFFF'
+              }}
+            />
             )}
           </div>
         </div>
