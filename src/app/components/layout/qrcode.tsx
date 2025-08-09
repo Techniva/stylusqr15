@@ -21,32 +21,44 @@ const QRCodePage: React.FC<QRCodePageProps> = ({ user = null, refreshQRStats }) 
     cornerShape: 'square',
     eyeShape: 'square',
     qrShape: 'square',
+    qrCodeShape: 'square', // ✅ Added to match interface
     foregroundColor: '#000000',
     dotColor: '#000000',
     cornerColor: '#000000',
     eyeColor: '#000000',
     backgroundColor: '#FFFFFF',
-    logoImage: '' // Initialize as empty string
+    logoImage: ''
   });
 
   // Debug settings changes
   const handleSettingsChange = (settings: QRCodeSettings) => {
     console.log('=== QRCODE PAGE SETTINGS CHANGE ===');
-    console.log('Received settings:', settings);
-    console.log('settings.logoImage:', settings.logoImage);
-    console.log('settings.logoImage type:', typeof settings.logoImage);
-    console.log('settings.logoImage constructor:', settings.logoImage?.constructor?.name);
-    console.log('settings.logoImage JSON:', JSON.stringify(settings.logoImage));
-    
-    // Force logoImage to be a string if it's not already
+
     let processedSettings = { ...settings };
+
+    // Force logoImage to be a string if it's not already
     if (settings.logoImage && typeof settings.logoImage !== 'string') {
       console.warn('LogoImage is not a string, converting...');
       processedSettings.logoImage = String(settings.logoImage);
-      console.log('Converted logoImage:', processedSettings.logoImage);
-      console.log('Converted logoImage type:', typeof processedSettings.logoImage);
     }
-    
+
+    // Ensure qrCodeShape is always set (fallback to qrShape)
+    if (!processedSettings.qrCodeShape) {
+          interface QRCodeSettings {
+              url: string;
+              cornerShape: 'square' | 'circle' | 'rounded';
+              eyeShape: 'square' | 'circle' | 'rounded';
+              qrShape: 'square' | 'circle' | 'rounded' | 'hexagon' | 'octagon' | 'diamond' | 'star' | 'heart';
+              qrCodeShape: 'square' | 'circle' | 'rounded' | 'hexagon' | 'octagon' | 'diamond' | 'star' | 'heart';
+              foregroundColor: string;
+              dotColor: string;
+              cornerColor: string;
+              eyeColor: string;
+              backgroundColor: string;
+              logoImage: string;
+            } processedSettings.qrShape || 'square';
+    }
+
     console.log('Final processed settings:', processedSettings);
     console.log('=== END QRCODE PAGE SETTINGS CHANGE ===');
     setQrSettings(processedSettings);
@@ -55,13 +67,21 @@ const QRCodePage: React.FC<QRCodePageProps> = ({ user = null, refreshQRStats }) 
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-8">
       <div className="md:col-span-2">
-        <WebsiteTab qrSettings={qrSettings} onSettingsChange={handleSettingsChange} user={user} />
+        <WebsiteTab
+          qrSettings={qrSettings}
+          onSettingsChange={handleSettingsChange}
+          user={user}
+        />
       </div>
       <div className="md:col-span-1">
-        <QRCodePreview settings={qrSettings} user={user} refreshQRStats={refreshQRStats} />
+        <QRCodePreview
+          settings={qrSettings}
+          user={user}
+          refreshQRStats={refreshQRStats}
+        />
       </div>
     </div>
   );
 };
 
-export default QRCodePage; 
+export default QRCodePage;
