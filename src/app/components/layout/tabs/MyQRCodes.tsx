@@ -8,6 +8,7 @@ import html2canvas from 'html2canvas';
 import * as ReactDOM from 'react-dom/client';
 import { PDFDownloadLink, Document, Page, Text, View, Image, StyleSheet } from '@react-pdf/renderer';
 import MyQRReportPDF from './QRReportPDF';
+import QrStatusToggle from './QrStatusToggle';
 
 interface UserData {
   id: number;
@@ -573,7 +574,7 @@ const MyQRCodes: React.FC<MyQRCodesProps> = ({ url, onUrlChange, user = null, on
                 {/* Column 2: Links + Scan/Update (split into 2 sub-columns) */}
                 <div className="flex flex-row w-full md:w-auto">
                   {/* Sub-column 1: Links */}
-                  <div className="min-w-[140px] px-4 flex flex-col justify-center hidden md:flex">
+                  <div className="min-w-[140px] px-4 hidden md:flex flex-col items-center justify-center ml-4">
                     <div className="flex flex-col gap-1">
                       <a
                         href={formatQRDataToURL(qr.qrData)}
@@ -607,7 +608,7 @@ const MyQRCodes: React.FC<MyQRCodesProps> = ({ url, onUrlChange, user = null, on
                     </div>
                   </div>
                   {/* Sub-column 2: Scan/Update (md+ only) */}
-                  <div className="flex flex-col items-center justify-center ml-4 hidden md:flex">
+                  <div className="hidden md:flex flex-col items-center justify-center ml-4">
                     <div className="flex flex-row items-center gap-4">
                       <div className="flex flex-col items-center">
                         <span className="text-2xl font-bold text-gray-900 leading-none">{qrScanCounts[qr.id] ?? 0}</span>
@@ -621,52 +622,11 @@ const MyQRCodes: React.FC<MyQRCodesProps> = ({ url, onUrlChange, user = null, on
                   </div>
                 </div>
                 {/* Column 3: Toggle (md+ only) */}
-                <div className="flex items-center justify-center hidden md:flex">
-                  <div className="flex w-48 h-9 rounded-full overflow-hidden border border-gray-300">
-                    <button
-                      className={`flex-1 flex items-center justify-center font-bold text-xs transition-colors duration-300
-                        ${qr.qrStatus ? 'bg-lime-400 text-green-900' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'}`}
-                      onClick={async () => {
-                        if (!qr.qrStatus) {
-                          try {
-                            const response = await fetch(`/api/qr/${qr.id}`, {
-                              method: 'PATCH',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ qrStatus: true }),
-                            });
-                            if (response.ok) {
-                              setQrCodes(prev => prev.map(item => item.id === qr.id ? { ...item, qrStatus: true } : item));
-                            }
-                          } catch {}
-                        }
-                      }}
-                    >
-                      {qr.qrStatus ? 'Active' : 'Activate'}
-                    </button>
-                    <button
-                      className={`flex-1 flex items-center justify-center font-bold text-xs transition-colors duration-300
-                        ${!qr.qrStatus ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
-                      onClick={async () => {
-                        if (qr.qrStatus) {
-                          try {
-                            const response = await fetch(`/api/qr/${qr.id}`, {
-                              method: 'PATCH',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ qrStatus: false }),
-                            });
-                            if (response.ok) {
-                              setQrCodes(prev => prev.map(item => item.id === qr.id ? { ...item, qrStatus: false } : item));
-                            }
-                          } catch {}
-                        }
-                      }}
-                    >
-                      {!qr.qrStatus ? 'Deactivated' : 'Deactivate'}
-                    </button>
-                  </div>
+                <div className="hidden md:flex flex-col items-center justify-center ml-4">
+                  <QrStatusToggle qr={qr} setQrCodes={setQrCodes} />
                 </div>
                 {/* Column 4: Action buttons (always visible) */}
-                <div className="flex flex-row items-center justify-start md:justify-center w-full md:w-auto ">
+                <div className="flex flex-row items-center justify-center w-full md:w-auto ">
                   <button
                     title="Analytics"
                     className={`w-10 h-10 flex items-center justify-center rounded-full border transition ${openAnalyticsId === qr.id ? 'bg-[#063970] text-white border-[#063970]' : 'border-[#063970] text-[#063970] hover:bg-[#063970] hover:text-white'}`}
