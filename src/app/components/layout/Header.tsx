@@ -182,7 +182,7 @@ const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 bg-white shadow-sm border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 py-1 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <a href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
@@ -211,11 +211,11 @@ const Header: React.FC = () => {
               </button>
               <div
                 ref={solutionsDropdownRef}
-                className={`fixed left-0 right-0 top-[64px] z-50 transition-all duration-300 ${openDropdown === 'solutions' ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
+                className={`fixed left-0 right-0 top-[72px] z-50 transition-all duration-300 ${openDropdown === 'solutions' ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
                 style={{maxWidth: '100vw'}}
                 tabIndex={-1}
               >
-                <div className="mx-auto max-w-7xl bg-white border border-gray-200 rounded-b-2xl shadow-2xl p-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+                <div className="mx-auto max-w-7xl bg-white border border-gray-200 rounded-b-2xl shadow-xl p-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
                   {/* By Industry */}
                   <div>
                     <div className="font-semibold text-gray-900 mb-1 border-b border-gray-100 pb-1">BY INDUSTRY</div>
@@ -275,11 +275,11 @@ const Header: React.FC = () => {
               </button>
               <div
                 ref={featuresDropdownRef}
-                className={`fixed left-0 right-0 top-[64px] z-50 transition-all duration-300 ${openDropdown === 'features' ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
+                className={`fixed left-0 right-0 top-[72px] z-50 transition-all duration-300 ${openDropdown === 'features' ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
                 style={{maxWidth: '100vw'}}
                 tabIndex={-1}
               >
-                <div className="mx-auto max-w-7xl bg-white border border-gray-200 rounded-b-2xl shadow-2xl p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-sm">
+                <div className="mx-auto max-w-7xl bg-white border border-gray-200 rounded-b-2xl shadow-xl p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-sm">
                   {/* Column 1: Core Features */}
                   <div>
                     <div className="font-semibold text-gray-900 mb-1 border-b border-gray-100 pb-1">CORE FEATURES</div>
@@ -371,7 +371,7 @@ const Header: React.FC = () => {
               <>
                 <button 
                   onClick={() => openAuthModal("login")}
-                  className="text-[#063970] hover:text-[#052c5c] px-4 py-2 rounded-full border border-[#063970] hover:bg-[#063970]/5 transition-colors text-sm font-medium"
+                  className="text-[#063970] hover:text-[#052c5c] px-6 py-2 rounded-full border border-[#063970] hover:bg-[#063970]/5 transition-colors text-sm font-medium"
                 >
                   Login
                 </button>
@@ -592,7 +592,7 @@ const Header: React.FC = () => {
                       openAuthModal("login");
                       setIsMenuOpen(false);
                     }}
-                    className="w-full px-4 py-3 rounded-lg border border-[#063970] text-[#063970] hover:bg-[#063970]/5 transition-colors font-medium"
+                    className="w-full px-6 py-3 rounded-lg border border-[#063970] text-[#063970] hover:bg-[#063970]/5 transition-colors font-medium"
                   >
                     Login
                   </button>
