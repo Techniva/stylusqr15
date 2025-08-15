@@ -9,7 +9,7 @@ export default function DigitalBusinessCardsPage() {
       <Header />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-white py-12 shadow-sm">
+        <section className="bg-white pt-12 shadow-sm">
           <div className="bg-gradient-to-br from-[#021B35] via-[#032544] to-[#041E30] py-12">
             <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
               <div className="flex-1">
@@ -41,27 +41,27 @@ export default function DigitalBusinessCardsPage() {
         </section>
 
         {/* Features Section with Flip Cards */}
-        <section className="max-w-5xl mx-auto px-4 py-12">
+        <section className="max-w-5xl mx-auto px-4 pt-10 pb-12">
           <h2 className="text-2xl font-bold text-center text-[#063970] mb-10">
             Why Choose QR Code Business Cards?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <FlipCard
-              frontIcon="/instant-share-icon.png"
+              frontIcon="/web-image/instant-share-icon.png"
               frontTitle="Instant Info Sharing"
               frontText="Share your contact details instantly with just a QR scan — no typing required."
               backTitle="Fast & Simple"
               backText="No apps needed. Just scan and connect instantly."
             />
             <FlipCard
-              frontIcon="/customize-icon.png"
+              frontIcon="/web-image/customization-icon.png"
               frontTitle="Fully Customizable"
               frontText="Add your logo, colors, and personal branding to stand out from the crowd."
               backTitle="Make It Yours"
               backText="Tailor every detail to match your style."
             />
             <FlipCard
-              frontIcon="/eco-friendly-icon.png"
+              frontIcon="/web-image/eco-friendly-icon.png"
               frontTitle="Eco-Friendly"
               frontText="Go paperless and reduce waste while keeping your networking smart and modern."
               backTitle="Save the Planet"
